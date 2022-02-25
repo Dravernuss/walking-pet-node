@@ -2,9 +2,11 @@
   "name": "walking-pet-node",
   "version": "1.0.0",
   "description": "Backend to Walking Pet Project",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
