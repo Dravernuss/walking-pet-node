@@ -22,12 +22,16 @@ export const getOneUser = async (req, res) => {
 
 // Controller create one walker
 export const createUser = async (req, res) => {
+  const { password } = req.body;
+
+  const hash = await bcrypt.hash(password, 10);
+
+  const newUser = new User({ ...req.body, password: hash });
   try {
-    const user = new User(req.body);
-    const newUser = await user.save();
-    newUser && res.status(201).json(newUser);
+    const user = await newUser.save();
+    user && res.status(201).json(user);
   } catch (error) {
-    response.status(500).json({ error });
+    res.status(500).json({ error });
   }
 };
 
@@ -60,4 +64,50 @@ export const updateUser = async (req, res) => {
   } catch (error) {
     res.status(500).send(error);
   }
+};
+
+export const deleteUser = async (req, res) => {
+  const { id: idUser } = req.params;
+  try {
+    const userToDelete = await User.findById(idUser);
+    if (!userToDelete) {
+      res.status(204).send({ err: "No user to delete" });
+    } else {
+      const deletedUser = await User.deleteOne(userToDelete);
+      if (deletedUser) res.status(200).json(deletedUser);
+    }
+  } catch (error) {
+    res.status(500).json({ error });
+  }
+};
+
+export const login = async (req, res) => {
+  const { email, password } = req.body;
+  const userDB = await User.findOne({ email });
+  if (!userDB) res.status(403).send();
+  console.log(userDB);
+
+  //Validate Hash
+  const passToHash = `${password}`;
+  bcrypt.compare(passToHash, userDB.password, (err, isPassValid) => {
+    if (email === userDB.email && isPassValid && userDB.avalaible) {
+      //JWT
+      jwt.sign(
+        { email: userDB.email },
+        process.env.SECRET_KEY,
+        //{ expiresIn: "32s" }, // tiempo de duracion del token 3° parametro
+        (error, token) => {
+          if (!error) {
+            res.status(200).json({
+              token,
+            });
+          } else {
+            res.status(403).send();
+          }
+        }
+      );
+    } else {
+      res.status(403).send();
+    }
+  });
 };

@@ -11,7 +11,7 @@ const router = express.Router();
 const petRoutes = {
   GET_ALL_PETS: "/pets",
   GET_ONE_PET: "/pets/:id",
-  CREATE: "/pets/create",
+  CREATE: "/pets/create/:id",
   UPDATE: "/pets/update/:id",
   DELETE: "/pets/delete/:id",
 

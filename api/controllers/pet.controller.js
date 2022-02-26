@@ -27,7 +27,8 @@ export const getPetsByUser = async (req, res) => {
 // Controller create one pet
 export const createPet = async (req, res) => {
   try {
-    const pet = new Pet(req.body);
+    const { id: user_id } = req.params;
+    const pet = new Pet({ ...req.body, user_id });
     const newPet = await pet.save();
     newPet && res.status(201).json(newPet);
   } catch (error) {

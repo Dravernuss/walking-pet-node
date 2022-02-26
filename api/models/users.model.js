@@ -10,7 +10,7 @@ const schemaUsers = {
   phone: String,
   district: String,
   address: String,
-  avalaible: Boolean,
+  avalaible: { type: Boolean, default: true },
   photo_url: String,
 };
 
