@@ -85,7 +85,6 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
   const userDB = await User.findOne({ email });
   if (!userDB) res.status(403).send();
-  console.log(userDB);
 
   //Validate Hash
   const passToHash = `${password}`;
@@ -100,6 +99,7 @@ export const login = async (req, res) => {
           if (!error) {
             res.status(200).json({
               token,
+              ...userDB._doc,
             });
           } else {
             res.status(403).send();

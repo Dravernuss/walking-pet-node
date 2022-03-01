@@ -2,6 +2,8 @@ import express from "express";
 
 import { userCtrl } from "../controllers/index.js";
 
+import { validateToken } from "../middlewares/index.js";
+
 // const { login, createUser } = userCtlr;
 const {
   getAllUsers,
@@ -22,7 +24,6 @@ const userRoutes = {
   UPDATE: "/users/update/:id",
   DELETE: "/users/delete/:id",
   LOGIN: "/users/login",
-  //   LOGIN: "/login",
 };
 
 router.get(userRoutes.GET_ALL_USERS, getAllUsers);
