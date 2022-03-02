@@ -10,7 +10,7 @@ const schemaPets = {
   additional_information: String,
   breed: String,
   gender: String,
-  photo_url: Date,
+  photo_url: String,
   carnet_url: String,
 };
 
