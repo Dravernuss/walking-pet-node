@@ -26,11 +26,11 @@ const userRoutes = {
   LOGIN: "/users/login",
 };
 
-router.get(userRoutes.GET_ALL_USERS, getAllUsers);
-router.get(userRoutes.GET_ONE_USER, getOneUser);
+router.get(userRoutes.GET_ALL_USERS, validateToken, getAllUsers);
+router.get(userRoutes.GET_ONE_USER, validateToken, getOneUser);
 router.post(userRoutes.CREATE, createUser);
-router.put(userRoutes.UPDATE, findUser, updateUser);
-router.delete(userRoutes.DELETE, deleteUser);
+router.put(userRoutes.UPDATE, validateToken, findUser, updateUser);
+router.delete(userRoutes.DELETE, validateToken, deleteUser);
 router.post(userRoutes.LOGIN, login);
 
 export default router;

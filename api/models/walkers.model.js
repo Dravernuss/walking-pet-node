@@ -11,7 +11,7 @@ const schemaWalkers = {
   district: String,
   address: String,
   photo_url: String,
-  avalaible: Boolean,
+  avalaible: { type: Boolean, default: false },
   price: Number,
   avalaible_districts: Array,
   greeting: String,
