@@ -7,7 +7,7 @@ const schemaPets = {
   age: Number,
   size: String,
   nature: String,
-  additional_information: String,
+  additional_information: { type: String, default: "" },
   breed: String,
   gender: String,
   photo_url: String,
