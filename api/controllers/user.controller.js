@@ -84,7 +84,10 @@ export const deleteUser = async (req, res) => {
 export const login = async (req, res) => {
   const { email, password } = req.body;
   const userDB = await User.findOne({ email });
-  if (!userDB) res.status(403).send();
+  if (!userDB) {
+    res.status(403).send();
+    return;
+  }
 
   //Validate Hash
   const passToHash = `${password}`;
