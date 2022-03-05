@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 // schema User
 const schemaUsers = {
-  role: String,
+  role: { type: String, default: "user" },
   firstname: String,
   lastname: String,
   email: String,
@@ -11,7 +11,7 @@ const schemaUsers = {
   district: String,
   address: String,
   avalaible: { type: Boolean, default: true },
-  photo_url: String,
+  photo_url: { type: String, default: "" },
 };
 
 // User model

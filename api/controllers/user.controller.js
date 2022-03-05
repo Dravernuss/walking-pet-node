@@ -13,14 +13,14 @@ export const getAllUsers = async (request, response) => {
   }
 };
 
-// Controller get one walker
+// Controller get one user
 export const getOneUser = async (req, res) => {
   const { id: idUser } = req.params;
   const user = await User.findById(idUser);
   res.json(user);
 };
 
-// Controller create one walker
+// Controller create one user
 export const createUser = async (req, res) => {
   const { password } = req.body;
 

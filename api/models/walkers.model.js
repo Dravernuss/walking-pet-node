@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 // schema Walkers
 const schemaWalkers = {
-  role: String,
+  role: { type: String, default: "walker" },
   firstname: String,
   lastname: String,
   email: String,
