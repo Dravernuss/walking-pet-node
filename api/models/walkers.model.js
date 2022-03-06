@@ -17,6 +17,7 @@ const schemaWalkers = {
   greeting: { type: String, default: "" },
   presentation: { type: String, default: "" },
   rating: { type: Number, default: 0 },
+  ready: { type: Boolean, default: false },
 };
 
 // Walker model
