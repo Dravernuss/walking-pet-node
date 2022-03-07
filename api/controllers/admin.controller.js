@@ -26,12 +26,15 @@ export const getOneAdmin = async (req, res) => {
 
 // Controller create one admin
 export const createAdmin = async (req, res) => {
+  const { password } = req.body;
+  const hash = await bcrypt.hash(password, 10);
+  const newAdmin = new Admin({ ...req.body, password: hash });
+  
   try {
-    const admin = new Admin(req.body);
-    const newAdmin = await admin.save();
-    newAdmin && res.status(201).json(newAdmin);
+    const admin = await newAdmin.save();
+    admin && res.status(201).json(admin);
   } catch (error) {
-    response.status(500).json({ error });
+    res.status(500).json({ error });
   }
 };
 
@@ -64,4 +67,43 @@ export const updateAdmin = async (req, res) => {
   } catch (error) {
     res.status(500).send(error);
   }
+};
+
+export const loginAdmin = async (req, res) => {
+  console.log('0entre a adminlogin')
+  const { email, password } = req.body;
+  const adminDB = await Admin.findOne({ email });
+  console.log('adminDB',adminDB);
+  if (!adminDB) {
+    res.status(403).send();
+    return;
+  }
+
+  //Validate Hash
+  const passToHash = `${password}`;
+  bcrypt.compare(passToHash, adminDB.password, (err, isPassValid) => {
+    if (email === adminDB.email && isPassValid ) {
+      //JWT : el token contendrá estas variables, lo podemos ver en el sgte link : https://jwt.io/
+      jwt.sign(
+        { 
+          email: adminDB.email,
+          name: adminDB.name,
+          role:adminDB.role,
+          _id:adminDB._id
+        },
+        process.env.SECRET_KEY,
+        (error, token) => {
+          if (!error) {
+            res.status(200).json({
+              token
+            });
+          } else {
+            res.status(403).send();
+          }
+        }
+      );
+    } else {
+      res.status(403).send();
+    }
+  });
 };
