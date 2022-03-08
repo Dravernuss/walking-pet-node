@@ -10,14 +10,21 @@ const schemaWalkers = {
   phone: String,
   district: String,
   address: String,
-  photo_url: { type: String, default: "" },
   avalaible: { type: Boolean, default: false },
+  dni_url: String,
+  experience: String,
+  reaction: String,
+  tools: String,
+  certification: Boolean,
+  photo_url: String,
   price: { type: Number, default: 0 },
   avalaible_districts: { type: Array, default: [] },
   greeting: { type: String, default: "" },
   presentation: { type: String, default: "" },
   rating: { type: Number, default: 0 },
   ready: { type: Boolean, default: false },
+  registration_state: { type: String, default: "Sin Revisar" },
+  admin_comment: { type: String, default: "" },
 };
 
 // Walker model
