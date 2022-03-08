@@ -92,6 +92,7 @@ export const login = async (req, res) => {
   //Validate Hash
   const passToHash = `${password}`;
   bcrypt.compare(passToHash, userDB.password, (err, isPassValid) => {
+
     if (email === userDB.email && isPassValid && userDB.avalaible) {
       //JWT
       jwt.sign(
