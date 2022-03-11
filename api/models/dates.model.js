@@ -9,12 +9,13 @@ const schemaDates = {
   pets_id: Array,
   pets_name: Array,
   district_selected: String,
-  date_day: Date,
+  client_address: String,
+  date_day: String,
   date_hour: String,
   date_time: Number,
   total_price: Number,
-  date_state: String,
-  calificated: Boolean,
+  date_state: { type: String, default: "Sin Confirmar" },
+  calificated: { type: Boolean, default: false },
 };
 
 // Date model
