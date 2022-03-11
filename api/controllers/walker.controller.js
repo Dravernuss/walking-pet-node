@@ -2,17 +2,6 @@ import { Walker } from "../models/index.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-// Controller get all Walkers
-export const getAllWalkers = async (request, response) => {
-  try {
-    const walkers = await Walker.find();
-    if (walkers.length === 0) response.status(204).send();
-    else response.status(200).json(walkers);
-  } catch (error) {
-    response.status(500).json({ error });
-  }
-};
-
 // Controller get one walker
 export const getOneWalker = async (req, res) => {
   const { id: idWalker } = req.params;
@@ -88,7 +77,6 @@ export const login = async (req, res) => {
     res.status(403).send();
     return;
   }
-
   //Validate Hash
   const passToHash = `${password}`;
   bcrypt.compare(passToHash, walkerDB.password, (err, isPassValid) => {
@@ -113,4 +101,17 @@ export const login = async (req, res) => {
       res.status(403).send();
     }
   });
+};
+
+// Controller get all Walkers
+export const getAllWalkers = async (request, response) => {
+  const ready = true;
+  const avalaible = true;
+  try {
+    const walkers = await Walker.find({ ready, avalaible });
+    if (walkers.length === 0) response.status(204).send();
+    else response.status(200).json(walkers);
+  } catch (error) {
+    response.status(500).json({ error });
+  }
 };

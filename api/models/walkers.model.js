@@ -22,6 +22,8 @@ const schemaWalkers = {
   greeting: { type: String, default: "" },
   presentation: { type: String, default: "" },
   rating: { type: Number, default: 0.5 },
+  total_rating: { type: Number, default: 0 },
+  total_walking: { type: Number, default: 0 },
   ready: { type: Boolean, default: false },
   registration_state: { type: String, default: "Sin Revisar" },
   admin_comment: { type: String, default: "" },
