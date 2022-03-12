@@ -20,7 +20,7 @@ const dateRoutes = {
   GET_DATES_BY_USER: "/dates/user/:id_user",
   GET_DATES_BY_WALKER: "/dates/walker/:id_walker",
   CREATE: "/dates/create/:id_user",
-  UPDATE: "dates/update/:id",
+  UPDATE: "/dates/update/:id",
 };
 
 router.get(dateRoutes.GET_ALL_DATES, getAllDates);

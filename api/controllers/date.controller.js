@@ -61,9 +61,10 @@ export const createDate = async (req, res) => {
 
 export const findDate = async (req, res, next) => {
   const { id: idDate } = req.params;
-
+  console.log(idDate);
   try {
     const date = await Date.findById(idDate);
+    console.log(date);
     if (date) {
       req.data = { date };
       next();

@@ -14,6 +14,7 @@ const schemaDates = {
   date_hour: String,
   date_time: Number,
   total_price: Number,
+  accepted: { type: Number, default: 2 },
   date_state: { type: String, default: "Sin Confirmar" },
   calificated: { type: Boolean, default: false },
 };
