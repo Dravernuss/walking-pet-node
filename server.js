@@ -6,6 +6,7 @@ import {
   adminRouter,
   petRouter,
   dateRouter,
+  commentRouter,
 } from "./api/routes/index.js";
 import "dotenv/config";
 import cors from "cors";
@@ -42,7 +43,7 @@ app.use("/api", userRouter);
 app.use("/api", adminRouter);
 app.use("/api", petRouter);
 app.use("/api", dateRouter);
-// app.use("/api", commentsRouter);
+app.use("/api", commentRouter);
 
 const PORT = process.env.PORT || 5000;
 

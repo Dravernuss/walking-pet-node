@@ -2,14 +2,13 @@ import express from "express";
 
 import { adminCtrl } from "../controllers/index.js";
 
-// const { login, createUser } = userCtlr;
-const { 
-  getAllAdmins, 
-  getOneAdmin, 
-  createAdmin, 
-  findAdmin, 
+const {
+  getAllAdmins,
+  getOneAdmin,
+  createAdmin,
+  findAdmin,
   updateAdmin,
-  loginAdmin
+  loginAdmin,
 } = adminCtrl;
 
 const router = express.Router();
