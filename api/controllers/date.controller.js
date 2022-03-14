@@ -49,9 +49,7 @@ export const getDatesByWalker = async (req, res) => {
 // Controller create a date
 export const createDate = async (req, res) => {
   try {
-    const { id_user: user_id } = req.params;
-
-    const date = new Date({ ...req.body, user_id });
+    const date = new Date(req.body);
     const newDate = await date.save();
     newDate && res.status(201).json(newDate);
   } catch (error) {
@@ -61,10 +59,8 @@ export const createDate = async (req, res) => {
 
 export const findDate = async (req, res, next) => {
   const { id: idDate } = req.params;
-  console.log(idDate);
   try {
     const date = await Date.findById(idDate);
-    console.log(date);
     if (date) {
       req.data = { date };
       next();

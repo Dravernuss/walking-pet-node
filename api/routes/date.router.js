@@ -19,7 +19,7 @@ const dateRoutes = {
   GET_DATE_BY_ID: "/dates/:id",
   GET_DATES_BY_USER: "/dates/user/:id_user",
   GET_DATES_BY_WALKER: "/dates/walker/:id_walker",
-  CREATE: "/dates/create/:id_user",
+  CREATE: "/dates/create",
   UPDATE: "/dates/update/:id",
 };
 

@@ -6,7 +6,6 @@ const schemaDates = {
   user_name: String,
   walker_id: String,
   walker_name: String,
-  pets_id: Array,
   pets_name: Array,
   district_selected: String,
   client_address: String,
