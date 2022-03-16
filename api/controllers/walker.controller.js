@@ -2,8 +2,9 @@ import { Walker } from "../models/index.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-// Controller get all Walkers
+// Controller get all Walkers ya está
 export const getAllWalkers = async (request, response) => {
+  console.log('esta llamando a los walkers')
   try {
     const walkers = await Walker.find();
     if (walkers.length === 0) response.status(204).send();
@@ -50,9 +51,10 @@ export const findWalker = async (req, res, next) => {
 export const updateWalker = async (req, res) => {
   const walkerToUpdate = req.body;
   const { walker } = req.data;
-
+  console.log(walkerToUpdate, walker)
   try {
     Walker.updateOne(walker, walkerToUpdate, (error, updatedWalker) => {
+      console.log(updatedWalker)
       if (!error) {
         res.status(200).json(updatedWalker);
       } else res.status(500).send(error);
