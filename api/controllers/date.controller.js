@@ -79,6 +79,8 @@ export const updateDate = async (req, res) => {
   try {
     Date.updateOne(date, dateToUpdate, (error, updatedDate) => {
       if (!error) {
+        // const response = dateMaper(updatedDate);
+        // res.status(200).json(response);
         res.status(200).json(updatedDate);
       } else res.status(500).send(error);
     });

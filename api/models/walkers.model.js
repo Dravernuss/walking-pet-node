@@ -21,7 +21,7 @@ const schemaWalkers = {
   avalaible_districts: { type: Array, default: [] },
   greeting: { type: String, default: "" },
   presentation: { type: String, default: "" },
-  rating: { type: Number, default: 0.5 },
+  rating: { type: String, default: "0" },
   total_rating: { type: Number, default: 0 },
   total_walking: { type: Number, default: 0 },
   ready: { type: Boolean, default: false },
