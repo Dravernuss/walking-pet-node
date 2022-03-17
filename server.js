@@ -5,6 +5,7 @@ import {
   userRouter,
   adminRouter,
   petRouter,
+  dateRouter
 } from "./api/routes/index.js";
 import "dotenv/config";
 import cors from "cors";
@@ -40,6 +41,7 @@ app.use("/api", walkerRouter);
 app.use("/api", userRouter);
 app.use("/api", adminRouter);
 app.use("/api", petRouter);
+app.use("/api", dateRouter);
 // app.use("/api", clientRouter);
 // app.use("/api", userRouter);
 
