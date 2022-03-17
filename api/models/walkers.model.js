@@ -16,17 +16,17 @@ const schemaWalkers = {
   avalaible_districts: Array,
   greeting: String,
   presentation: String,
-  rating: Number,
+  // rating: Number,
   registration_state: String,
-  dni_url: String,
+  // dni_url: String,
   experience: String,
   reaction: String,
   tools: String,
   certification: Boolean,
-  total_rating: Number,
-  total_walking: Number,
+  // total_rating: Number,
+  // total_walking: Number,
   ready: Boolean,
-  admin_comment: String,
+  // admin_comment: String,
 };
 
 
