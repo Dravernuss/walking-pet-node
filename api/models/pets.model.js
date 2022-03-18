@@ -11,7 +11,6 @@ const schemaPets = {
   breed: String,
   gender: String,
   photo_url: String,
-  carnet_url: { type: String, default: "" },
 };
 
 // Pet model

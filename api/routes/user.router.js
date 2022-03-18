@@ -4,7 +4,6 @@ import { userCtrl } from "../controllers/index.js";
 
 import { validateToken } from "../middlewares/index.js";
 
-// const { login, createUser } = userCtlr;
 const {
   getAllUsers,
   createUser,

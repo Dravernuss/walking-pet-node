@@ -2,7 +2,8 @@ import express from "express";
 
 import { petCtrl } from "../controllers/index.js";
 
-// const { login, createUser } = userCtlr;
+import { validateToken } from "../middlewares/index.js";
+
 const { getAllPets, createPet, getPetsByUser, findPet, updatePet, deletePet } =
   petCtrl;
 
@@ -19,10 +20,10 @@ const petRoutes = {
 };
 
 router.get(petRoutes.GET_ALL_PETS, getAllPets);
-router.get(petRoutes.GET_ONE_PET, getPetsByUser);
-router.post(petRoutes.CREATE, createPet);
-router.put(petRoutes.UPDATE, findPet, updatePet);
-router.delete(petRoutes.DELETE, deletePet);
+router.get(petRoutes.GET_ONE_PET, validateToken, getPetsByUser);
+router.post(petRoutes.CREATE, validateToken, createPet);
+router.put(petRoutes.UPDATE, validateToken, findPet, updatePet);
+router.delete(petRoutes.DELETE, validateToken, deletePet);
 // router.post(userRoutes.LOGIN, login);
 
 export default router;

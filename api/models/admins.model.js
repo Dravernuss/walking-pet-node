@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 // schema Admin
 const schemaAdmins = {
-  role: String,
+  role: { type: String, default: "admin" },
   name: String,
   email: String,
   password: String,
