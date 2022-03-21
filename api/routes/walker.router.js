@@ -12,12 +12,14 @@ const {
   updateWalker,
   login,
   deleteWalker,
+  getAllWalkersRegistrations,
 } = walkerCtrl;
 
 const router = express.Router();
 
 const walkerRoutes = {
   GET_ALL_WALKERS: "/walkers",
+  GET_ALL_REGISTRATION: "/walkers/registration",
   GET_ONE_WALKERS: "/walkers/:id",
   CREATE: "/walkers/create",
   UPDATE: "/walkers/update/:id",
@@ -26,6 +28,7 @@ const walkerRoutes = {
 };
 
 router.get(walkerRoutes.GET_ALL_WALKERS, getAllWalkers);
+router.get(walkerRoutes.GET_ALL_REGISTRATION, getAllWalkersRegistrations);
 router.get(walkerRoutes.GET_ONE_WALKERS, getOneWalker);
 router.post(walkerRoutes.CREATE, createWalker);
 router.put(walkerRoutes.UPDATE, findWalker, updateWalker);

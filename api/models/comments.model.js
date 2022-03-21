@@ -5,6 +5,7 @@ const schemaComments = {
   date_id: String,
   user_id: String,
   user_name: String,
+  walker_name: String,
   walker_id: String,
   rating: Number,
   comment: String,

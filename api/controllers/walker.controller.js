@@ -43,10 +43,10 @@ export const findWalker = async (req, res, next) => {
 export const updateWalker = async (req, res) => {
   const walkerToUpdate = req.body;
   const { walker } = req.data;
-  console.log(walkerToUpdate, walker)
+  console.log(walkerToUpdate, walker);
   try {
     Walker.updateOne(walker, walkerToUpdate, (error, updatedWalker) => {
-      console.log(updatedWalker)
+      console.log(updatedWalker);
       if (!error) {
         res.status(200).json(updatedWalker);
       } else res.status(500).send(error);
@@ -110,6 +110,15 @@ export const getAllWalkers = async (request, response) => {
   const avalaible = true;
   try {
     const walkers = await Walker.find({ ready, avalaible });
+    if (walkers.length === 0) response.status(204).send();
+    else response.status(200).json(walkers);
+  } catch (error) {
+    response.status(500).json({ error });
+  }
+};
+export const getAllWalkersRegistrations = async (request, response) => {
+  try {
+    const walkers = await Walker.find();
     if (walkers.length === 0) response.status(204).send();
     else response.status(200).json(walkers);
   } catch (error) {
