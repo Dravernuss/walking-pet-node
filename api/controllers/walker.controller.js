@@ -1,6 +1,9 @@
 import { Walker } from "../models/index.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { RegistrationWalkerInit } from "../../templates/Welcome/RegistrationWalkerInit.js";
+import senderMail from "../services/senderMail.js";
+import { RegistrationWalkerAccepted } from "../../templates/Welcome/RegistrationWalkerAccepted.js";
 
 // Controller get one walker
 export const getOneWalker = async (req, res) => {
@@ -11,13 +14,32 @@ export const getOneWalker = async (req, res) => {
 
 // Controller create one walker
 export const createWalker = async (req, res) => {
-  const { password } = req.body;
+  const { password, email } = req.body;
 
   const hash = await bcrypt.hash(password, 10);
 
   const newWalker = new Walker({ ...req.body, password: hash });
   try {
     const walker = await newWalker.save();
+    //-------------- SEND MAIL -----------------------------
+    senderMail.config = {
+      host: "smtp.sendgrid.net",
+      port: 465,
+      secure: true, // true for 465, false for other ports
+      auth: {
+        user: "apikey", // generated ethereal user
+        pass: process.env.SENDGRID_API_KEY, // generated ethereal password
+      },
+    };
+    const htmlWelcomeWalkerInit = RegistrationWalkerInit();
+    await senderMail.sendMail({
+      from: '"WalkingPet Application" <walkingpet.application@gmail.com>', // sender address
+      to: email, // list of receivers
+      subject: "Solicitud de Registro Recibida", // Subject line
+      html: htmlWelcomeWalkerInit,
+    });
+
+    //------------------------------------------------------
     walker && res.status(201).json(walker);
   } catch (error) {
     response.status(500).json({ error });
@@ -43,11 +65,37 @@ export const findWalker = async (req, res, next) => {
 export const updateWalker = async (req, res) => {
   const walkerToUpdate = req.body;
   const { walker } = req.data;
-  console.log(walkerToUpdate, walker);
+  // console.log("walkerToUpdate", walkerToUpdate);
+  // console.log("walker", walker);
+
   try {
-    Walker.updateOne(walker, walkerToUpdate, (error, updatedWalker) => {
-      console.log(updatedWalker);
+    Walker.updateOne(walker, walkerToUpdate, async (error, updatedWalker) => {
+      // console.log(updatedWalker);
       if (!error) {
+        if (walkerToUpdate.hasOwnProperty("admin_comment")) {
+          //-------------- SEND MAIL -----------------------------
+          senderMail.config = {
+            host: "smtp.sendgrid.net",
+            port: 465,
+            secure: true, // true for 465, false for other ports
+            auth: {
+              user: "apikey", // generated ethereal user
+              pass: process.env.SENDGRID_API_KEY, // generated ethereal password
+            },
+          };
+          const AdminResponse =
+            walkerToUpdate.registration_state === "Aprobado"
+              ? RegistrationWalkerAccepted(walkerToUpdate.admin_comment)
+              : "<p>Fuiste causa</p>";
+          await senderMail.sendMail({
+            from: '"WalkingPet Application" <walkingpet.application@gmail.com>', // sender address
+            to: walker.email, // list of receivers
+            subject: "Respuesta solicitud registro paseador WalkingPet", // Subject line
+            html: AdminResponse,
+          });
+
+          //------------------------------------------------------
+        }
         res.status(200).json(updatedWalker);
       } else res.status(500).send(error);
     });

@@ -1,6 +1,9 @@
 import { User } from "../models/index.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import senderMail from "../services/senderMail.js";
+// import welcome from "../../templates/Welcome/welcome.html";
+import { Welcome } from "../../templates/Welcome/Welcome.js";
 
 // Controller get all Users
 export const getAllUsers = async (request, response) => {
@@ -22,13 +25,33 @@ export const getOneUser = async (req, res) => {
 
 // Controller create one user
 export const createUser = async (req, res) => {
-  const { password } = req.body;
+  const { password, email } = req.body;
 
   const hash = await bcrypt.hash(password, 10);
 
   const newUser = new User({ ...req.body, password: hash });
+
   try {
     const user = await newUser.save();
+    //-------------- SEND MAIL -----------------------------
+    senderMail.config = {
+      host: "smtp.sendgrid.net",
+      port: 465,
+      secure: true, // true for 465, false for other ports
+      auth: {
+        user: "apikey", // generated ethereal user
+        pass: process.env.SENDGRID_API_KEY, // generated ethereal password
+      },
+    };
+    const htmlWelcome = Welcome();
+    await senderMail.sendMail({
+      from: '"WalkingPet Application" <walkingpet.application@gmail.com>', // sender address
+      to: email, // list of receivers
+      subject: "Bienvenido a WalkingPet", // Subject line
+      html: htmlWelcome,
+    });
+
+    //------------------------------------------------------
     user && res.status(201).json(user);
   } catch (error) {
     res.status(500).json({ error });
@@ -92,7 +115,6 @@ export const login = async (req, res) => {
   //Validate Hash
   const passToHash = `${password}`;
   bcrypt.compare(passToHash, userDB.password, (err, isPassValid) => {
-
     if (email === userDB.email && isPassValid && userDB.avalaible) {
       //JWT
       jwt.sign(
