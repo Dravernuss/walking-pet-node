@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import { RegistrationWalkerInit } from "../../templates/Welcome/RegistrationWalkerInit.js";
 import senderMail from "../services/senderMail.js";
 import { RegistrationWalkerAccepted } from "../../templates/Welcome/RegistrationWalkerAccepted.js";
+import { RegistrationWalkerRejected } from "../../templates/Welcome/RegistrationWalkerRejected.js";
 
 // Controller get one walker
 export const getOneWalker = async (req, res) => {
@@ -86,7 +87,7 @@ export const updateWalker = async (req, res) => {
           const AdminResponse =
             walkerToUpdate.registration_state === "Aprobado"
               ? RegistrationWalkerAccepted(walkerToUpdate.admin_comment)
-              : "<p>Fuiste causa</p>";
+              : RegistrationWalkerRejected(walkerToUpdate.admin_comment);
           await senderMail.sendMail({
             from: '"WalkingPet Application" <walkingpet.application@gmail.com>', // sender address
             to: walker.email, // list of receivers

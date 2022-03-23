@@ -1,6 +1,9 @@
-import { Date } from "../models/index.js";
+import { Date, Walker, User } from "../models/index.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import senderMail from "../services/senderMail.js";
+import { DateChanged } from "../../templates/Dates/DateChanged.js";
+import { DateAsked } from "../../templates/Dates/DateAsked.js";
 
 // Controller get all Dates
 export const getAllDates = async (request, response) => {
@@ -51,9 +54,39 @@ export const createDate = async (req, res) => {
   try {
     const date = new Date(req.body);
     const newDate = await date.save();
+    //-------------- SEND MAIL -----------------------------
+    const { email } = await Walker.findOne({ _id: date.walker_id });
+    senderMail.config = {
+      host: "smtp.sendgrid.net",
+      port: 465,
+      secure: true, // true for 465, false for other ports
+      auth: {
+        user: "apikey", // generated ethereal user
+        pass: process.env.SENDGRID_API_KEY, // generated ethereal password
+      },
+    };
+    const htmlDateAsked = DateAsked(
+      newDate.user_id,
+      newDate.user_name,
+      newDate.district_selected,
+      newDate.client_address,
+      newDate.date_day,
+      newDate.date_hour,
+      newDate.date_time,
+      newDate.total_price
+    );
+    await senderMail.sendMail({
+      from: '"WalkingPet Application" <walkingpet.application@gmail.com>', // sender address
+      to: email, // list of receivers
+      subject: `Nueva Cita Solicitada - CLIENTE: ${newDate.user_name}`, // Subject line
+      html: htmlDateAsked,
+    });
+
+    //------------------------------------------------------
     newDate && res.status(201).json(newDate);
   } catch (error) {
-    response.status(500).json({ error });
+    res.status(500).json({ error });
+    console.log("error", error);
   }
 };
 
@@ -77,10 +110,36 @@ export const updateDate = async (req, res) => {
   const { date } = req.data;
 
   try {
-    Date.updateOne(date, dateToUpdate, (error, updatedDate) => {
+    Date.updateOne(date, dateToUpdate, async (error, updatedDate) => {
       if (!error) {
         // const response = dateMaper(updatedDate);
         // res.status(200).json(response);
+        //-------------- SEND MAIL -----------------------------
+        const { email: emailWalker } = await Walker.findOne({
+          _id: date.walker_id,
+        });
+        const { email: emailUser } = await User.findOne({
+          _id: date.user_id,
+        });
+        senderMail.config = {
+          host: "smtp.sendgrid.net",
+          port: 465,
+          secure: true, // true for 465, false for other ports
+          auth: {
+            user: "apikey", // generated ethereal user
+            pass: process.env.SENDGRID_API_KEY, // generated ethereal password
+          },
+        };
+        const htmlDateChanged = DateChanged();
+        await senderMail.sendMail({
+          from: '"WalkingPet Application" <walkingpet.application@gmail.com>', // sender address
+          to: `${emailWalker}, ${emailUser}`, // list of receivers
+          subject: `Estado de Cita Actualizado - WalkingPet`, // Subject line
+          html: htmlDateChanged,
+        });
+
+        //------------------------------------------------------
+
         res.status(200).json(updatedDate);
       } else res.status(500).send(error);
     });
