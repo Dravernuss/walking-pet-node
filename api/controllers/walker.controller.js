@@ -66,12 +66,9 @@ export const findWalker = async (req, res, next) => {
 export const updateWalker = async (req, res) => {
   const walkerToUpdate = req.body;
   const { walker } = req.data;
-  // console.log("walkerToUpdate", walkerToUpdate);
-  // console.log("walker", walker);
 
   try {
     Walker.updateOne(walker, walkerToUpdate, async (error, updatedWalker) => {
-      // console.log(updatedWalker);
       if (!error) {
         if (walkerToUpdate.hasOwnProperty("admin_comment")) {
           //-------------- SEND MAIL -----------------------------
@@ -135,7 +132,6 @@ export const login = async (req, res) => {
       jwt.sign(
         { email: walkerDB.email },
         process.env.SECRET_KEY,
-        //{ expiresIn: "32s" }, // tiempo de duracion del token 3° parametro
         (error, token) => {
           if (!error) {
             res.status(200).json({

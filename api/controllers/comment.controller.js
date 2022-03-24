@@ -1,6 +1,9 @@
-import { Comment } from "../models/index.js";
+import { Comment, Walker, User, Date } from "../models/index.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import senderMail from "../services/senderMail.js";
+import { MessageUser } from "../../templates/Comments/MessageUser.js";
+import { MessageWalker } from "../../templates/Comments/MessageWalker.js";
 
 // Controller get all Comments
 export const getAllComments = async (request, response) => {
@@ -16,7 +19,6 @@ export const getAllComments = async (request, response) => {
 // Controller get Comment by Id
 export const getCommentById = async (req, res) => {
   try {
-    // const { id_user: idUser } = req.params;
     const { id } = req.params;
     const comment = await Comment.find({ _id: id });
     res.json(comment);
@@ -76,13 +78,65 @@ export const findComment = async (req, res, next) => {
 export const updateCommentAdmin = async (req, res) => {
   const commentToUpdate = req.body;
   const { comment } = req.data;
-
   try {
-    Comment.updateOne(comment, commentToUpdate, (error, updatedComment) => {
-      if (!error) {
-        res.status(200).json(updatedComment);
-      } else res.status(500).send(error);
-    });
+    Comment.updateOne(
+      comment,
+      commentToUpdate,
+      async (error, updatedComment) => {
+        if (!error) {
+          const { email: emailWalker } = await Walker.findOne({
+            _id: comment.walker_id,
+          });
+          const { email: emailUser } = await User.findOne({
+            _id: comment.user_id,
+          });
+          const { date_day: dateDay, date_hour: dateHour } = await Date.findOne(
+            {
+              _id: comment.date_id,
+            }
+          );
+
+          const isToUser = commentToUpdate.destinatary === "user";
+
+          const messageUser = MessageUser(
+            dateDay,
+            dateHour,
+            comment.user_name,
+            comment.walker_name,
+            commentToUpdate.message_user
+          );
+          const messageWalker = MessageWalker(
+            dateDay,
+            dateHour,
+            comment.comment,
+            comment.report_photo_url,
+            comment.user_name,
+            comment.walker_name,
+            commentToUpdate.message_walker
+          );
+          //-------------- SEND MAIL -----------------------------
+          senderMail.config = {
+            host: "smtp.sendgrid.net",
+            port: 465,
+            secure: true, // true for 465, false for other ports
+            auth: {
+              user: "apikey", // generated ethereal user
+              pass: process.env.SENDGRID_API_KEY, // generated ethereal password
+            },
+          };
+
+          await senderMail.sendMail({
+            from: '"WalkingPet Application" <walkingpet.application@gmail.com>', // sender address
+            to: isToUser ? emailUser : emailWalker, // list of receivers
+            subject: "Reporte de Cita - Walking Pet", // Subject line
+            html: isToUser ? messageUser : messageWalker,
+          });
+
+          //------------------------------------------------------
+          res.status(200).json(updatedComment);
+        } else res.status(500).send(error);
+      }
+    );
   } catch (error) {
     res.status(500).send(error);
   }

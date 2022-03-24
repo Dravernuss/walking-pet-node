@@ -26,10 +26,10 @@ export const getDatesByUser = async (req, res) => {
     res.status(403).json({ error });
   }
 };
+
 // Controller get Date by Id
 export const getDateById = async (req, res) => {
   try {
-    // const { id_user: idUser } = req.params;
     const { id } = req.params;
     const date = await Date.find({ _id: id });
     res.json(date);
@@ -86,7 +86,6 @@ export const createDate = async (req, res) => {
     newDate && res.status(201).json(newDate);
   } catch (error) {
     res.status(500).json({ error });
-    console.log("error", error);
   }
 };
 
@@ -114,6 +113,7 @@ export const updateDate = async (req, res) => {
       if (!error) {
         // const response = dateMaper(updatedDate);
         // res.status(200).json(response);
+
         //-------------- SEND MAIL -----------------------------
         const { email: emailWalker } = await Walker.findOne({
           _id: date.walker_id,

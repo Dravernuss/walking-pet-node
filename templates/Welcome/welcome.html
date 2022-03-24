@@ -209,7 +209,11 @@
                                               class="esd-block-text es-p35t es-p5b es-p30r es-p30l"
                                               align="center"
                                             >
-                                              <h1>Estado de la Solicitud de Paseo Actualizado</h1>
+                                              <h1>Reporte de Paseo de</h1>
+                                              <h1>
+                                                ${userName} - ${dateDay} -
+                                                ${dateHour} hrs
+                                              </h1>
                                             </td>
                                           </tr>
                                           <tr>
@@ -316,40 +320,66 @@
                                               align="left"
                                             >
                                               <p>
-                                                El estado de la cita solicitada ha cambiado, por favor ingrese a la aplicación
-                                                para ver los cambios.
+                                                Hola ${walkerName},
+                                                recientemente hemos recibido un
+                                                reporte del paseo que realizaste
+                                                el dia {$dateDay} a las
+                                                ${dateHour} hrs. El cliente
+                                                informó el siguiente
+                                                inconveniente.
+                                              </p>
+
+                                              <br />
+                                              <p style="margin-bottom: 10px">
+                                                Reporte del Cliente:
+                                              </p>
+                                              <span
+                                                style="
+                                                  font-style: italic;
+                                                  color: #666666;
+                                                  font-family: helvetica;
+                                                  margin: 15px;
+                                                "
+                                                >${commentUser}</span
+                                              >
+                                              <br />
+                                              <br />
+                                              <div align="center">
+                                                <img
+                                                  src="${reportPhoto}"
+                                                  width="300px"
+                                                />
+                                              </div>
+                                              <br />
+                                              <p>
+                                                Nos importa el bienestar y
+                                                comodidad de nuestros clientes,
+                                                es por ello que nuestros
+                                                administradores siempre están
+                                                atentos a cualquier
+                                                inconveniente. Es por ello que
+                                                se llego a la siguiente
+                                                conclusión.
                                               </p>
                                             </td>
                                           </tr>
                                           <tr>
                                             <td
-                                              class="esd-block-button es-p35t es-p35b es-p10r es-p10l"
-                                              align="center"
+                                              class="esd-block-text es-p20t es-p30r es-p30l es-m-txt-l"
+                                              align="left"
                                             >
-                                              <img
-                                                src="https://res.cloudinary.com/walkingpet/image/upload/v1648075833/photos_emails/unyycvxewmwpuq3z8ptj.png"
-                                                width="300px"
-                                              />
-                                            </td>
-                                            </tr>
-                                            <tr>
-                                            <td
-                                              class="esd-block-button es-p35t es-p35b es-p10r es-p10l"
-                                              align="center"
-                                            >
-                                              <span class="es-button-border"
-                                                ><a
-                                                  href="https://walkingpet.netlify.app/login"
-                                                  class="es-button es-button-1647906130229"
-                                                  target="_blank"
-                                                  style="
-                                                    border-width: 15px 30px;
-                                                  "
-                                                >
-                                                  Revisa la cita aquí</a
-                                                ></span
+                                              <p style="margin-bottom: 10px">
+                                                Comentario del Administrador:
+                                              </p>
+                                              <span
+                                                style="
+                                                  font-style: italic;
+                                                  color: #666666;
+                                                  font-family: helvetica;
+                                                  margin: 15px;
+                                                "
+                                                >${commentAdmin}</span
                                               >
-
                                             </td>
                                           </tr>
 
@@ -359,7 +389,7 @@
                                               align="left"
                                             >
                                               <p>
-                                                Si tienes alguna duda sobre la reserva de citas,
+                                                Si tienes alguna duda, solo
                                                 responde a este correo -
                                                 nosotros siempre estaremos
                                                 felices de ayudarlo.

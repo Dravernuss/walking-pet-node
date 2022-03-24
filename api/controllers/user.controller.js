@@ -2,7 +2,6 @@ import { User } from "../models/index.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import senderMail from "../services/senderMail.js";
-// import welcome from "../../templates/Welcome/welcome.html";
 import { Welcome } from "../../templates/Welcome/Welcome.js";
 
 // Controller get all Users
@@ -120,7 +119,6 @@ export const login = async (req, res) => {
       jwt.sign(
         { email: userDB.email },
         process.env.SECRET_KEY,
-        //{ expiresIn: "32s" }, // tiempo de duracion del token 3° parametro
         (error, token) => {
           if (!error) {
             res.status(200).json({

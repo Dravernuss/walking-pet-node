@@ -18,7 +18,6 @@ import cors from "cors";
 // Connect to db
 const dbConnection = process.env.DB_STRING_CONNECTION;
 await mongoose.connect(dbConnection);
-console.log("conexión exitosa con la base de datos");
 // Listener to connection error
 mongoose.connection.on("error", function (e) {
   console.error("ERROR: ", e);
