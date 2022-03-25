@@ -1064,9 +1064,9 @@ export const MessageWalker = (
                                                   es por ello que nuestros
                                                   administradores siempre están
                                                   atentos a cualquier
-                                                  inconveniente. Es por ello que
-                                                  se llego a la siguiente
-                                                  conclusión.
+                                                  inconveniente. Por el bien de la
+                                                  comunidad de Walking Pet, el administrador
+                                                  llego a la siguiente conclusión:
                                                 </p>
                                               </td>
                                             </tr>
@@ -1076,7 +1076,7 @@ export const MessageWalker = (
                                                 align="left"
                                               >
                                                 <p style="margin-bottom: 10px">
-                                                  Comentario del Administrador:
+                                                  Respuesta del Administrador:
                                                 </p>
                                                 <span
                                                   style="

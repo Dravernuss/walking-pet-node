@@ -1035,9 +1035,7 @@ export const MessageUser = (
                                                         es por ello que nuestros
                                                         administradores siempre están
                                                         atentos a cualquier
-                                                        inconveniente. Es por ello que
-                                                        se llego a la siguiente
-                                                        conclusión.
+                                                        inconveniente. 
                                                       </p>
                                                     </td>
                                                   </tr>
@@ -1047,7 +1045,7 @@ export const MessageUser = (
                                                       align="left"
                                                     >
                                                       <p style="margin-bottom: 10px">
-                                                        Comentario del Administrador:
+                                                        Respuesta del Administrador:
                                                       </p>
                                                       <span
                                                         style="

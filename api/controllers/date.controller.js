@@ -4,13 +4,27 @@ import bcrypt from "bcrypt";
 import senderMail from "../services/senderMail.js";
 import { DateChanged } from "../../templates/Dates/DateChanged.js";
 import { DateAsked } from "../../templates/Dates/DateAsked.js";
+import { dateMaper } from "../mapers/dateMaper.js";
 
 // Controller get all Dates
 export const getAllDates = async (request, response) => {
   try {
     const dates = await Date.find();
+    const transformedDates = dateMaper(dates);
     if (dates.length === 0) response.status(204).send();
-    else response.status(200).json(dates);
+    else {
+      await Promise.all(
+        transformedDates.map(async (transformedDate, i) => {
+          if (transformedDate.date_state !== dates[i].date_state) {
+            await Date.findOneAndUpdate(
+              { _id: transformedDate._id },
+              { date_state: transformedDate.date_state }
+            );
+          }
+        })
+      );
+      response.status(200).json(transformedDates);
+    }
   } catch (error) {
     response.status(500).json({ error });
   }
@@ -21,7 +35,20 @@ export const getDatesByUser = async (req, res) => {
   try {
     const { id_user: idUser } = req.params;
     const date = await Date.find({ user_id: idUser });
-    res.json(date);
+    const transformedDates = dateMaper(date);
+    if (date.length !== 0) {
+      await Promise.all(
+        transformedDates.map(async (transformedDate, i) => {
+          if (transformedDate.date_state !== date[i].date_state) {
+            await Date.findOneAndUpdate(
+              { _id: transformedDate._id },
+              { date_state: transformedDate.date_state }
+            );
+          }
+        })
+      );
+    }
+    res.json(transformedDates);
   } catch (error) {
     res.status(403).json({ error });
   }
@@ -38,12 +65,25 @@ export const getDateById = async (req, res) => {
   }
 };
 
-// Controller get Dates by user
+// Controller get Dates by Walker
 export const getDatesByWalker = async (req, res) => {
   try {
     const { id_walker: idWalker } = req.params;
     const date = await Date.find({ walker_id: idWalker });
-    res.json(date);
+    const transformedDates = dateMaper(date);
+    if (date.length !== 0) {
+      await Promise.all(
+        transformedDates.map(async (transformedDate, i) => {
+          if (transformedDate.date_state !== date[i].date_state) {
+            await Date.findOneAndUpdate(
+              { _id: transformedDate._id },
+              { date_state: transformedDate.date_state }
+            );
+          }
+        })
+      );
+    }
+    res.json(transformedDates);
   } catch (error) {
     res.status(403).json({ error });
   }
