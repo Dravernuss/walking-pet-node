@@ -26,11 +26,14 @@ export const getOneUser = async (req, res) => {
 export const createUser = async (req, res) => {
   const { password, email } = req.body;
 
-  const hash = await bcrypt.hash(password, 10);
-
-  const newUser = new User({ ...req.body, password: hash });
+  const exist_user = await User.findOne({ email: email });
 
   try {
+    if (exist_user) throw new Error();
+    const hash = await bcrypt.hash(password, 10);
+
+    const newUser = new User({ ...req.body, password: hash });
+
     const user = await newUser.save();
     //-------------- SEND MAIL -----------------------------
     senderMail.config = {
@@ -53,7 +56,7 @@ export const createUser = async (req, res) => {
     //------------------------------------------------------
     user && res.status(201).json(user);
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(403).send();
   }
 };
 

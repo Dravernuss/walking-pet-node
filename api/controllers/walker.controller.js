@@ -17,10 +17,14 @@ export const getOneWalker = async (req, res) => {
 export const createWalker = async (req, res) => {
   const { password, email } = req.body;
 
-  const hash = await bcrypt.hash(password, 10);
+  const exist_walker = await Walker.findOne({ email: email });
 
-  const newWalker = new Walker({ ...req.body, password: hash });
   try {
+    if (exist_walker) throw new Error();
+
+    const hash = await bcrypt.hash(password, 10);
+
+    const newWalker = new Walker({ ...req.body, password: hash });
     const walker = await newWalker.save();
     //-------------- SEND MAIL -----------------------------
     senderMail.config = {
@@ -43,7 +47,7 @@ export const createWalker = async (req, res) => {
     //------------------------------------------------------
     walker && res.status(201).json(walker);
   } catch (error) {
-    response.status(500).json({ error });
+    res.status(403).send();
   }
 };
 
