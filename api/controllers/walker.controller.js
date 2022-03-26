@@ -13,6 +13,17 @@ export const getOneWalker = async (req, res) => {
   res.json(walker);
 };
 
+export const getOneWalkerByEmail = async (req, res) => {
+  try {
+    const { email: emailWalker } = req.params;
+    const walker = await Walker.findOne({ email: emailWalker });
+    if (!walker) throw new Error();
+    res.json(walker);
+  } catch (error) {
+    res.status(403).send();
+  }
+};
+
 // Controller create one walker
 export const createWalker = async (req, res) => {
   const { password, email } = req.body;
